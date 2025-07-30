@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { FileText, Upload, Download } from 'lucide-react'
 
 interface ProcessedFile {
   id: string
@@ -98,81 +101,153 @@ export default function Home() {
 
   const processingFiles = files.filter(f => f.status === 'processing')
   const completedFiles = files.filter(f => f.status === 'completed')
+  const failedFiles = files.filter(f => f.status === 'failed')
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-slate-900 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-2xl font-bold text-gray-800">NextJS App</h1>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight">Sanitisium PDF Validator</h1>
+          <p className="text-muted-foreground">
+            Upload PDFs for sanitization and download the processed files
+          </p>
+        </div>
         
         {/* Upload Section */}
-        <div className="bg-teal-400 rounded-lg p-8 text-center">
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={handleFileUpload}
-            disabled={uploading}
-            className="hidden"
-            id="file-upload"
-          />
-          <Button 
-            onClick={() => document.getElementById('file-upload')?.click()}
-            disabled={uploading}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md font-medium"
-          >
-            {uploading ? 'Uploading...' : 'Upload PDF'}
-          </Button>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Upload className="h-5 w-5" />
+              Upload PDF
+            </CardTitle>
+            <CardDescription>
+              Select a PDF file to process through Sanitisium
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileUpload}
+              disabled={uploading}
+              className="hidden"
+              id="file-upload"
+            />
+            <Button 
+              onClick={() => document.getElementById('file-upload')?.click()}
+              disabled={uploading}
+              size="lg"
+              className="w-full"
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              {uploading ? 'Uploading...' : 'Choose PDF File'}
+            </Button>
+          </CardContent>
+        </Card>
 
         {/* PDFs being processed */}
         {processingFiles.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">PDFs being processed</h2>
-            <div className="bg-yellow-100 border-2 border-yellow-300 rounded-lg p-6">
-              <div className="flex flex-wrap gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Processing Files
+              </CardTitle>
+              <CardDescription>
+                Files currently being processed by Sanitisium
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {processingFiles.map((file) => (
-                  <div key={file.id} className="flex flex-col items-center">
-                    <div className="w-16 h-20 bg-blue-500 rounded-md flex items-center justify-center mb-2">
-                      <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-                      </svg>
+                  <div key={file.id} className="flex flex-col items-center space-y-2 p-4 border rounded-lg bg-muted/50">
+                    <div className="w-12 h-16 bg-primary rounded-md flex items-center justify-center">
+                      <FileText className="h-6 w-6 text-primary-foreground" />
                     </div>
-                    <span className="text-xs text-gray-600 text-center max-w-20 truncate">
-                      {file.id.substring(0, 8)}...
+                    <Badge variant="secondary" className="text-xs">
+                      Processing
+                    </Badge>
+                    <span className="text-xs text-muted-foreground text-center truncate max-w-full">
+                      {file.originalName}
                     </span>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* PDFs Regenerated */}
         {completedFiles.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">PDFs Regenerated</h2>
-            <div className="bg-yellow-100 border-2 border-yellow-300 rounded-lg p-6">
-              <div className="flex flex-wrap gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Download className="h-5 w-5" />
+                Completed Files
+              </CardTitle>
+              <CardDescription>
+                Successfully processed files ready for download
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {completedFiles.map((file) => (
-                  <div key={file.id} className="flex flex-col items-center">
-                    <div className="w-16 h-20 bg-green-500 rounded-md flex items-center justify-center mb-2">
-                      <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-                      </svg>
+                  <div key={file.id} className="flex flex-col items-center space-y-2 p-4 border rounded-lg bg-muted/50">
+                    <div className="w-12 h-16 bg-green-600 rounded-md flex items-center justify-center">
+                      <FileText className="h-6 w-6 text-white" />
                     </div>
-                    <span className="text-xs text-gray-600 text-center max-w-20 truncate mb-2">
-                      {file.id.substring(0, 8)}...
+                    <Badge variant="default" className="bg-green-600 hover:bg-green-700">
+                      Completed
+                    </Badge>
+                    <span className="text-xs text-muted-foreground text-center truncate max-w-full">
+                      {file.originalName}
                     </span>
                     <Button
                       onClick={() => downloadFile(file.filePath, file.originalName)}
-                      className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-1 text-xs rounded"
+                      size="sm"
+                      variant="outline"
+                      className="w-full"
                     >
-                      download
+                      <Download className="mr-1 h-3 w-3" />
+                      Download
                     </Button>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Failed Files */}
+        {failedFiles.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-destructive">
+                <FileText className="h-5 w-5" />
+                Failed Files
+              </CardTitle>
+              <CardDescription>
+                Files that failed to process
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {failedFiles.map((file) => (
+                  <div key={file.id} className="flex flex-col items-center space-y-2 p-4 border rounded-lg bg-muted/50">
+                    <div className="w-12 h-16 bg-destructive rounded-md flex items-center justify-center">
+                      <FileText className="h-6 w-6 text-destructive-foreground" />
+                    </div>
+                    <Badge variant="destructive">
+                      Failed
+                    </Badge>
+                    <span className="text-xs text-muted-foreground text-center truncate max-w-full">
+                      {file.originalName}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>
