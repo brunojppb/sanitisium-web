@@ -28,10 +28,10 @@ export async function POST(request: NextRequest) {
     // Send to localhost:8000 as server-to-server call
     const url = new URL('http://localhost:8000/sanitise/pdf')
     url.searchParams.append('id', id)
-    // url.searchParams.append('success_callback_url', 'http://host.docker.internal:3000/api/callback/success')
-    // url.searchParams.append('failure_callback_url', 'http://host.docker.internal:3000/api/callback/failure')
-    url.searchParams.append('success_callback_url', 'http://localhost:3000/api/callback/success')
-    url.searchParams.append('failure_callback_url', 'http://localhost:3000/api/callback/failure')
+    url.searchParams.append('success_callback_url', 'http://host.docker.internal:3000/api/callback/success')
+    url.searchParams.append('failure_callback_url', 'http://host.docker.internal:3000/api/callback/failure')
+    // url.searchParams.append('success_callback_url', 'http://localhost:3000/api/callback/success')
+    // url.searchParams.append('failure_callback_url', 'http://localhost:3000/api/callback/failure')
 
     const response = await fetch(url.toString(), {
       method: 'POST',
