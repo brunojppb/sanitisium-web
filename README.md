@@ -134,11 +134,6 @@ Processed PDFs are saved to the `uploads/` directory in the project root.
 npm run build
 ```
 
-### Type checking:
-```bash
-npm run type-check
-```
-
 ### Linting:
 ```bash
 npm run lint
@@ -165,7 +160,11 @@ npm run lint
 
 ## Testing with Sanitisium
 
-1. Ensure Sanitisium is running on `localhost:8000`
+1. Ensure Sanitisium is running on `localhost:8000`. Run with docker with:
+```shell
+docker run -p 8000:8000 --add-host=host.docker.internal:host-gateway brunojppb/sanitisium
+```
+
 2. Start this application with `npm run dev`
 3. Upload a PDF file through the web interface
 4. Monitor the real-time status updates
