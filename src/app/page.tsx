@@ -107,7 +107,7 @@ export default function Home() {
     <div className="min-h-screen bg-slate-900 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Sanitisium PDF Validator</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Sanitisium PDF Regenerator</h1>
           <p className="text-muted-foreground">
             Upload PDFs for sanitization and download the processed files
           </p>

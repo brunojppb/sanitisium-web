@@ -1,4 +1,4 @@
-# Sanitisium PDF Validator
+# Sanitisium PDF Regenerator
 
 A NextJS application designed to validate the PDF file regeneration functionality of the [Sanitisium](https://github.com/brunojppb/sanitisium) project. This app provides a web interface for uploading PDFs, sending them to Sanitisium for sanitization, and downloading the regenerated files.
 
